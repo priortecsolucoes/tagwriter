@@ -33,7 +33,7 @@ def write_tag(request: WriteTagRequest):
         SET string_value = %s, int_value = %s, double_value = %s
         WHERE tag_id = (
             SELECT id FROM tag WHERE name = %s
-        ) AND %s = 'string'
+        ) 
         """
     
         cursor.execute(update_query, (request.string_value,
