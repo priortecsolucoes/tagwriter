@@ -43,4 +43,4 @@ def write_tag(request: WriteTagRequest):
         conn.close()
         return {"message": "Tag atualizada com sucesso"}
     except Exception as e:
-        return {"message": "Erro ao tentar realizar escrita de tag: " + e }
+        return {"message": f"Erro ao tentar realizar escrita de tag: {e}" }
