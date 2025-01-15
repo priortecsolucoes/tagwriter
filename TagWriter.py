@@ -24,20 +24,23 @@ def get_db_connection():
 
 @app.put("/update-tag")
 def write_tag(request: WriteTagRequest):
-    conn = get_db_connection()
-    cursor = conn.cursor()
-
-    update_query = """
-    UPDATE tag_value
-    SET string_value = %s, int_value = %s, double_value = %s
-    WHERE tag_id = (
-        SELECT id FROM tag WHERE name = %s
-    ) AND %s = 'string'
-    """
-
-    cursor.execute(update_query, (request.string_value,
-                   request.int_value, request.double_value, request.tag_name))
-    conn.commit()
-    cursor.close()
-    conn.close()
-    return {"message": "Tag atualizada com sucesso"}
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+    
+        update_query = """
+        UPDATE tag_value
+        SET string_value = %s, int_value = %s, double_value = %s
+        WHERE tag_id = (
+            SELECT id FROM tag WHERE name = %s
+        ) AND %s = 'string'
+        """
+    
+        cursor.execute(update_query, (request.string_value,
+                       request.int_value, request.double_value, request.tag_name))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return {"message": "Tag atualizada com sucesso"}
+    except Exception as e:
+        st.error(f"Erro ao tentar realizar escrita de tag: {e}")
